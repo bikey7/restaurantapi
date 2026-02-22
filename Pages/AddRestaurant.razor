@@ -1,0 +1,24 @@
+@page "/add"
+@using RestaurantUI.Models
+@inject RestaurantUI.Services.FakeRestaurantService service
+@inject NavigationManager nav
+
+<h3>Add Restaurant</h3>
+
+<input placeholder="Name" @bind="restaurant.Name" /><br /><br />
+<input placeholder="Location" @bind="restaurant.Location" /><br /><br />
+<input placeholder="Cuisine Type" @bind="restaurant.CuisineType" /><br /><br />
+<input type="number" placeholder="Rating" @bind="restaurant.Rating" /><br /><br />
+
+<button class="btn btn-success" @onclick="Save">Save</button>
+
+@code {
+    Restaurant restaurant = new();
+
+    void Save()
+    {
+        restaurant.Id = service.Restaurants.Count + 1;
+        service.Restaurants.Add(restaurant);
+        nav.NavigateTo("/restaurants");
+    }
+}

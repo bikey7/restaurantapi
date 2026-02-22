@@ -1,0 +1,57 @@
+@page "/dashboard"
+@using RestaurantUI.Models
+@inject RestaurantUI.Services.FakeRestaurantService service
+
+<h3 class="mb-4">Restaurant Dashboard</h3>
+
+<div class="row">
+    <!-- Total Restaurants Card -->
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Restaurants</h5>
+                <p class="card-text display-4">@TotalRestaurants</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Average Rating Card -->
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Average Rating</h5>
+                <p class="card-text display-4">@AverageRating ⭐</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cuisine Breakdown Card -->
+    <div class="col-md-4 mb-3">
+        <div class="card text-dark bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Cuisine Breakdown</h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var c in CuisineCounts)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @c.Key
+                            <span class="badge bg-primary rounded-pill">@c.Value</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int TotalRestaurants => service.Restaurants.Count;
+
+    private double AverageRating => service.Restaurants.Count > 0
+        ? Math.Round(service.Restaurants.Average(r => r.Rating), 2)
+        : 0;
+
+    private Dictionary<string, int> CuisineCounts => service.Restaurants
+        .GroupBy(r => r.CuisineType ?? "Unknown")
+        .ToDictionary(g => g.Key, g => g.Count());
+}
