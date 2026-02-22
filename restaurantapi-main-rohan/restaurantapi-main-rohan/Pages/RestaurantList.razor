@@ -1,0 +1,32 @@
+@page "/restaurants"
+@using RestaurantUI.Models
+@inject RestaurantUI.Services.FakeRestaurantService service
+
+<h3>Restaurant List</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Cuisine</th>
+        <th>Rating</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var r in service.Restaurants)
+    {
+        <tr>
+            <td>@r.Name</td>
+            <td>@r.Location</td>
+            <td>@r.CuisineType</td>
+            <td>@r.Rating ⭐</td>
+            <td>
+                <a href="/edit/@r.Id">Edit</a> |
+                <a href="/delete/@r.Id">Delete</a> |
+                <a href="/review/@r.Id">Review</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<a class="btn btn-primary" href="/add">Add Restaurant</a>
