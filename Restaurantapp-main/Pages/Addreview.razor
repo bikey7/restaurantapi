@@ -1,0 +1,21 @@
+@page "/review/{id:int}"
+@using RestaurantUI.Models
+@inject RestaurantUI.Services.FakeRestaurantService service
+@inject NavigationManager nav
+
+<h3>Add Review</h3>
+
+<textarea @bind="review"></textarea><br /><br />
+<button class="btn btn-primary" @onclick="Save">Save</button>
+
+@code {
+    [Parameter] public int id { get; set; }
+    string? review;
+
+    void Save()
+    {
+        var r = service.Restaurants.FirstOrDefault(x => x.Id == id);
+        if (r != null) r.Review = review;
+        nav.NavigateTo("/restaurants");
+    }
+}
