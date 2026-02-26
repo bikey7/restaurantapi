@@ -1,0 +1,49 @@
+@page "/edit/{id:int}"
+@using RestaurantUI.Models
+@inject RestaurantUI.Services.FakeRestaurantService service
+@inject NavigationManager nav
+
+<h3>Edit Restaurant</h3>
+
+@if (restaurant != null)
+{
+    <input @bind="restaurant.Name" placeholder="Name" />
+    <br />
+
+    <br />
+    <input @bind="restaurant.Location" placeholder="Location" />
+
+    <br />
+
+    <br />
+    <input @bind="restaurant.CuisineType" placeholder="Cuisine Type" />
+
+    <br />
+
+    <br />
+    <input type="number" @bind="restaurant.Rating" placeholder="Rating" />
+
+    <br />
+
+    <br />
+    <button class="btn btn-warning" @onclick="Update">Update</button>
+}
+else
+{
+    <p>Loading restaurant data...</p>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    Restaurant? restaurant;
+
+    protected override void OnInitialized()
+    {
+        restaurant = service.Restaurants.FirstOrDefault(r => r.Id == id);
+    }
+
+    void Update()
+    {
+        nav.NavigateTo("/restaurants");
+    }
+}

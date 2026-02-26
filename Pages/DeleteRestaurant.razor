@@ -1,0 +1,19 @@
+@page "/delete/{id:int}"
+@using RestaurantUI.Models
+@inject RestaurantUI.Services.FakeRestaurantService service
+@inject NavigationManager nav
+
+<h3>Delete Restaurant</h3>
+
+<button class="btn btn-danger" @onclick="Delete">Delete</button>
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    void Delete()
+    {
+        var r = service.Restaurants.FirstOrDefault(x => x.Id == id);
+        if (r != null) service.Restaurants.Remove(r);
+        nav.NavigateTo("/restaurants");
+    }
+}
